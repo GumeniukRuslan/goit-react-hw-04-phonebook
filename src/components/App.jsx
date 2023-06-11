@@ -46,7 +46,7 @@ export const App = () => {
                 : contacts} />
             </>
           : <p>Add some contacts</p>}
-        <Toaster toastOptions={{duration: 1500}} />
+        <Toaster position="top-right" toastOptions={{duration: 1500}} />
       </div>
     );
 };

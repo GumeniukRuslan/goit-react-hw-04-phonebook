@@ -10,13 +10,11 @@ export const App = () => {
   const [filter, setFilter] = useState();
  
   useEffect(() => {
-    if (localStorage.getItem('contacts')) {
-      setContacts(JSON.parse(localStorage.getItem('contacts')))
-    };
+    localStorage.getItem('contacts') && setContacts(JSON.parse(localStorage.getItem('contacts')))
   }, [])
 
   useEffect(() => {
-    contacts.length && localStorage.setItem("contacts", JSON.stringify(contacts))
+    contacts.length ? localStorage.setItem("contacts", JSON.stringify(contacts)) : localStorage.removeItem("contacts");
   }, [contacts])
 
   const saveContact = (contact) => {

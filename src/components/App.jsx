@@ -6,15 +6,11 @@ import { toast, Toaster } from "react-hot-toast";
 
 export const App = () => {
 
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(localStorage.getItem('contacts') ? JSON.parse(localStorage.getItem('contacts')) : []);
   const [filter, setFilter] = useState();
- 
-  useEffect(() => {
-    localStorage.getItem('contacts') && setContacts(JSON.parse(localStorage.getItem('contacts')))
-  }, [])
 
   useEffect(() => {
-    contacts.length ? localStorage.setItem("contacts", JSON.stringify(contacts)) : localStorage.removeItem("contacts");
+    localStorage.setItem("contacts", JSON.stringify(contacts));
   }, [contacts])
 
   const saveContact = (contact) => {
@@ -29,22 +25,20 @@ export const App = () => {
 
   const filterContacts = (evt) => setFilter(evt.target.value.trim());
 
-  
+  return (
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm saveContact={saveContact} />
 
-    return (
-      <div>
-        <h1>Phonebook</h1>
-        <ContactForm saveContact={saveContact} />
-
-        {contacts.length
-          ? <><h2>Contacts</h2>
-              <Filter filterValue={filterContacts} />
-              <ContactList deleteContact={deleteContact} contacts={filter
-                ? contacts.filter(obj => obj.name.toLowerCase().includes(filter.toLowerCase()))
-                : contacts} />
-            </>
-          : <p>Add some contacts</p>}
-        <Toaster position="top-right" toastOptions={{duration: 1500}} />
-      </div>
-    );
+      {contacts.length
+        ? <><h2>Contacts</h2>
+            <Filter filterValue={filterContacts} />
+            <ContactList deleteContact={deleteContact} contacts={filter
+              ? contacts.filter(obj => obj.name.toLowerCase().includes(filter.toLowerCase()))
+              : contacts} />
+          </>
+        : <p>Add some contacts</p>}
+      <Toaster position="top-right" toastOptions={{duration: 1500}} />
+    </div>
+  );
 };
